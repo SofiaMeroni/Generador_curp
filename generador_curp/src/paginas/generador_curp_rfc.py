@@ -4,6 +4,8 @@ from src.utils.formularios import llenado_de_formulario
 import uuid
 import random
 import time
+import json
+import os
 
 def curp_rfc(driver):
     # Navegar a la página
@@ -39,5 +41,26 @@ def curp_rfc(driver):
     
     n_curp = curp.text
     n_rfc = rfc.text
+
+    # Ruta al archivo JSON
+    archivo_curps = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'datos', 'curps.json')
+    os.makedirs(os.path.dirname(archivo_curps), exist_ok=True)
+
+    # Leer el archivo JSON o inicializar con un diccionario vacío
+    try:
+        with open(archivo_curps, 'r') as file:
+            datos = json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        datos = {"curps": []}
+
+    # Agregar nuevo CURP
+    datos.setdefault("curps", []).append(n_curp)
+
+    # Guardar los datos actualizados
+    with open(archivo_curps, 'w') as file:
+        json.dump(datos, file, indent=4)
+
+    print(f"CURP: {n_curp}, RFC: {n_rfc}")
     
-    return print(n_curp, n_rfc)
+    
+    return (n_curp, n_rfc)
