@@ -46,7 +46,7 @@ def curp_rfc(driver):
     archivo_curps = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'datos', 'curps.json')
     os.makedirs(os.path.dirname(archivo_curps), exist_ok=True)
 
-    # Leer el archivo JSON o inicializar con un diccionario vacío
+    # Leer el archivo JSON
     try:
         with open(archivo_curps, 'r') as file:
             datos = json.load(file)
